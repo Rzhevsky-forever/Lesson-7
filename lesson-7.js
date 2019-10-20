@@ -29,5 +29,3 @@ let positions = [
       price: 57000
     }
   ];
-  
-  
