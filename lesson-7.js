@@ -47,3 +47,26 @@ function lotCalculator(positions, amount = 1) {
 }
 
 lotCalculator(positions[0], 29);
+
+// Задача 2
+
+const deferedPayments = [];
+
+// поставщик, суммаОтргрузки, датаОтгрузки
+function deferPay (producer, shippingSum = 0, shippingDate = new Date() + (24*60*60) ) {
+  
+  // new Date().toISOString()
+  deferedPayments.push(producer);
+  deferedPayments.push(shippingSum);
+  deferedPayments.push(shippingDate.toString());
+}
+
+const producer = {
+  name: 'Рязанский телепортостроительный завод',
+  deferPeriod: 10 // срок отсрочки
+};
+
+// вызываем
+deferPay(producer);
+console.log(deferedPayments.length); // 1
+console.log(deferedPayments[0], deferedPayments[1], deferedPayments[2]); // 1
