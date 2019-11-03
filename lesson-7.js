@@ -53,17 +53,19 @@ lotCalculator(positions[0], 29);
 const deferedPayments = [];
 
 // Сервис формирования даты платежа
-function getDateForPay (shippingDate, deferPeriod) {
-  return (shippingDate + ((24*60*60) * deferPeriod)).toString();
+function getDateForPay (shippingDate, deferPeriod = 1) {
+  return (shippingDate.setDate(shippingDate.getDate() + deferPeriod));
 }
 
 // поставщик, суммаОтргрузки, датаОтгрузки
-function deferPay (producer, shippingSum = 0, shippingDate = new Date() + (24*60*60) ) {
+function deferPay (producer, shippingSum = 0, shippingDate = new Date()) {
   
-  deferedPayments[0]=[];
-  deferedPayments[0].push(producer);
-  deferedPayments[0].push(shippingSum);
-  deferedPayments[0].push(getDateForPay(shippingDate, producer.deferPeriod));
+  deferedPayments[0]={};
+  deferedPayments[0].name = producer.name;
+  deferedPayments[0].amount = shippingSum;
+  deferedPayments[0].paymentDate = new Date (
+      getDateForPay(shippingDate, producer.deferPeriod)
+    ).toString();
 }
 
 const producer = {
@@ -72,18 +74,10 @@ const producer = {
 };
 
 // вызываем
-deferPay(producer);
+deferPay(producer, 7200, new Date(2030, 4 - 1, 10));
 
+// печатаем результат
 console.log(deferedPayments.length);
-console.log(deferedPayments[0][0].name);
-console.log(deferedPayments[0][1]);
-console.log(deferedPayments[0][2]);
-
-// console.log(deferedPayments[0].name);
-// console.log(deferedPayments[0].amount);
-// console.log(deferedPayments[0].paymentDate);
-
-
-// console.log(deferedPayments.length); // 1
-// console.log(deferedPayments[0], deferedPayments[1], deferedPayments[2]); // 1
-
+console.log(deferedPayments[0].name);
+console.log(deferedPayments[0].amount);
+console.log(deferedPayments[0].paymentDate);
