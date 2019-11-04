@@ -52,12 +52,27 @@ lotCalculator(positions[0], 29);
 
 const deferedPayments = [];
 
-// Сервис формирования даты платежа
+/**
+ * Сервис формирования даты платежа
+ * 
+ * @param {obj Date} shippingDate // дата отгрузки
+ * @param {int} deferPeriod // период отсрочки
+ * 
+ * @return {int} // Дата платежа в секундах или милисекундах 
+ */
 function getDateForPay (shippingDate, deferPeriod = 1) {
   return (shippingDate.setDate(shippingDate.getDate() + deferPeriod));
 }
 
-// поставщик, суммаОтргрузки, датаОтгрузки
+/**
+ * Логирует поставщика, сумму платежа и таду платежа
+ * 
+ * @param {obj custom} producer // поставщик 
+ * @param {int} shippingSum // сумма отгрузки
+ * @param {obj Date} shippingDate // дата отгрузки
+ * 
+ * @return {null}
+ */
 function deferPay (producer, shippingSum = 0, shippingDate = new Date()) {
   
   deferedPayments[0]={};
@@ -68,6 +83,7 @@ function deferPay (producer, shippingSum = 0, shippingDate = new Date()) {
     ).toString();
 }
 
+// формируем объект поставщика
 const producer = {
   name: 'Рязанский телепортостроительный завод',
   deferPeriod: 10 // срок отсрочки
@@ -81,3 +97,31 @@ console.log(deferedPayments.length);
 console.log(deferedPayments[0].name);
 console.log(deferedPayments[0].amount);
 console.log(deferedPayments[0].paymentDate);
+
+// Задача 3
+
+function loadCurrencyJSON() {
+  return '{"AUD":44.95,"AZN":33.73,"GBP":73.42,"AMD":0.12,"BYN":30.96,"BGN":32.01,"BRL":18.8,"HUF":0.2,"DKK":8.42,"USD":58.85,"EUR":62.68,"INR":0.88,"KZT":0.18,"CAD":44.74,"KGS":0.85,"CNY":8.55,"MDL":2.94,"NOK":7.02,"PLN":14.55,"RON":13.92,"ZZZ":79.91,"SGD":41.36,"TJS":7.43,"TRY":15.97,"TMT":16.84,"UZS":0.02,"UAH":2.16,"CZK":2.32,"SEK":6.6,"CHF":58.69,"ZAR":4.4,"KRW":0.05,"JPY":0.52}';
+}
+
+function convertCurrency (amount = 1000, from = 'EUR', to = 'USD') {
+  let currency;
+  let result;
+
+  if (amount) {
+    try {
+      currency = JSON.parse(loadCurrencyJSON());
+
+      result = (currency[from] / currency[to]) * amount;
+      
+      console.log(result.toFixed(2));
+    } catch(e) {
+      console.error(`кажется JSON не корректный : ${e.name}, ${e.message}`);
+    }
+    // console.log(currency);
+  }
+}
+
+// "USD":58.85
+// "JPY":0.52
+convertCurrency(200, 'USD', 'JPY');
